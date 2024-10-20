@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Moedas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main>
+
+        <div class="calculadora">
+
+            <h2>Contador de Moedas</h2>
+            <div>
+                <label for="moeda">Selecione a Moeda:</label>
+
+                <select id="moeda">
+                    <option value="1.00">R$ 1,00</option>
+                    <option value="0.50">R$ 0,50</option>
+                    <option value="0.25">R$ 0,25</option>
+                    <option value="0.10">R$ 0,10</option>
+                    <option value="0.05">R$ 0,05</option>
+                </select>
+            </div>
+            <div>
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" min="0">
+            </div>
+            <div>
+                <label for="total">Total em R$:</label>
+                <input type="text" id="total" readonly>
+            </div>
+            <div class="form-action">
+                <button type="button" onclick="calcularTotal()">Calcular</button>
+                <button type="button" onclick="limparForm()">Limpar</button>
+            </div>
+        </div>
+
+        <table id="resultado-table" border="1">
+            <thead>
+                <tr>
+                    <th>Moeda (R$)</th>
+                    <th>Quantidade</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="produtos"></tbody>
+        </table>
+        
+        <div>
+            <h3>Valor Total Acumulado: R$ <span id="valor-acumulado">0.00</span></h3>
+        </div>
+    </main>
+
+    <script>
+        let valorAcumulado = 0; 
+
+        function calcularTotal() {
+
+            const moeda = Number(document.getElementById('moeda').value);
+
+            const quantidade = Number(document.getElementById('quantidade').value);
+
+            const total = (moeda * quantidade).toFixed(2);
+
+            document.getElementById('total').value = total;
+
+            valorAcumulado += parseFloat(total); 
+
+            document.getElementById('valor-acumulado').textContent = valorAcumulado.toFixed(2); 
+
+            exibirResultados(moeda, quantidade, total);
+        }
+
+        function exibirResultados(moeda, quantidade, total) {
+            const tbody = document.getElementById('produtos');
+            const tr = document.createElement('tr');
+            const tdMoeda = document.createElement('td');
+            const tdQuantidade = document.createElement('td');
+            const tdTotal = document.createElement('td');
+
+            tdMoeda.textContent = moeda.toFixed(2);
+            tdQuantidade.textContent = quantidade;
+            tdTotal.textContent = total;
+
+            tr.appendChild(tdMoeda);
+            tr.appendChild(tdQuantidade);
+            tr.appendChild(tdTotal);
+            tbody.appendChild(tr);
+        }
+
+        function limparForm() {
+            document.getElementById('moeda').selectedIndex = 0; 
+            document.getElementById('quantidade').value = '';
+            document.getElementById('total').value = '';
+            document.getElementById('produtos').innerHTML = ''; 
+            valorAcumulado = 0; 
+            document.getElementById('valor-acumulado').textContent = '0.00'; 
+        }
+    </script>
+</body>
+</html>
